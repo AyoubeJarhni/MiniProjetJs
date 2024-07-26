@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            background-color: aquamarine;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .card {
+            margin-left: 30%;
+            padding: 10px;
+        }
+        .search input {
+            border: 1px solid grey;
+            border-radius: 15px;
+            height: 20%;
+            width: 40%;
+            background: #ebebeb;
+            font-size: 18px;
+            margin-left: 15%;
+        }
+        .search button {
+            border: 1px solid grey;
+            border-radius: 50%;
+            background: #ebebeb;
+            height: 30px;
+            width: 30px;
+            cursor: pointer;
+            background-color: aliceblue;
+        }
+        .search button img {
+            width: 30px;
+            height: 30px;
+        }
+        .weather img {
+            display: block;
+            margin: 20px auto;
+        }
+        .weather h1, .weather h2 {
+            text-align: center;
+            color: aliceblue;
+        }
+        .details {
+            display: flex;
+            justify-content: space-between;
+            color: aliceblue;
+            padding: 0 10%;
+        }
+        .details .col {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+        .details .col img {
+            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+        }
+        .details .col div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city name" class="searchin">
+            <button><img src="images/search.png" class="seachB"></button>
+        </div>
+    </div>
+    <div class="weather">
+        <img src="images/rain.png" class="widthImg">
+        <h1 class="temp">22°C</h1>
+        <h2 class="city">New York</h2>
+    </div>
+    <div class="details">
+        <div class="col">
+            <img src="images/humidity.png" alt="Humidity">
+            <div>
+                <p>Humidity</p>
+                <p class="humidity">60%</p>
+            </div>
+        </div>
+        <div class="col">
+            <img src="images/wind.png" alt="Wind Speed">
+            <div>
+                <p class="speed">18 Km/h</p>
+                <p>Wind speed</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cInpt = document.querySelector(".searchin");
+        const cBtn = document.querySelector(".seachB");
+        const imaglOG=document.querySelector(".widthImg");
+
+        const apiKey = "fd61accb35ae199663d6e9c68f17c406";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+        
+        async function checkWeather(city) {
+            const response = await fetch(`${apiUrl}${city}&appid=${apiKey}&units=metric`);
+            const data = await response.json();
+            console.log(data);
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = data.main.temp + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".speed").innerHTML = data.wind.speed + "Km/h";
+             if(data.weather[0].main==="Clouds") {
+                imaglOG.src="images\clouds.png";
+             }
+             else if(data.weather[0].main==="Clear") {
+                
+
+                imaglOG.src="images\clears.png"; }
+                else if(data.weather[0].main==="Rain") {
+
+                    imaglOG.src="images\rain.png"; }
+                    else if(data.weather[0].main==="Drizzle") {
+
+                        imaglOG.src="images\drizzle.png"; }
+           
+                        else if(data.weather[0].main==="Snow") {
+
+                            imaglOG.src="images\snow.png"; }            
+
+        }
+        
+        cBtn.addEventListener("click", () => {
+            checkWeather(cInpt.value);
+        });
+    </script>
+</body>
+</html>
